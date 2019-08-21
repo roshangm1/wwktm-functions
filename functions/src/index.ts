@@ -10,7 +10,7 @@ exports.upvoteAQuestion = functions.https.onCall(async (data, context) => {
     .firestore()
     .collection("questions")
     .doc(questionId)
-    .get()).data();
+    .get()).data()!;
 
   if (question.voters.includes(uid)) {
     question.voters = arrayRemove(question.voters, uid);
