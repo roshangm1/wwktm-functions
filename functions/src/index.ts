@@ -34,7 +34,7 @@ function arrayRemove(arr: [], value: string) {
 
 exports.onCommentAdded = functions.firestore
   .document("/feed/{postId}/comments/{commentId}")
-  .onUpdate(async (snap, context) => {
+  .onWrite(async (snap, context) => {
     const count = (await admin
       .firestore()
       .collection("feed")
@@ -46,4 +46,15 @@ exports.onCommentAdded = functions.firestore
       .collection("feed")
       .doc(context.params.postId)
       .update({ commentCount: count });
+  });
+
+exports.onQuestionEdited = functions.firestore
+  .document("/questions/{questionId}")
+  .onWrite(async (snap, context) => {
+    const count = snap.after.data()!.voters.length;
+    await admin
+      .firestore()
+      .collection("questions")
+      .doc(context.params.questionId)
+      .update({ upvoteCount: count });
   });
