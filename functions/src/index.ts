@@ -31,3 +31,19 @@ function arrayRemove(arr: [], value: string) {
     return ele != value;
   });
 }
+
+exports.onCommentAdded = functions.firestore
+  .document("/feed/{postId}/comments/{commentId}")
+  .onUpdate(async (snap, context) => {
+    var count = (await admin
+      .firestore()
+      .collection("feed")
+      .doc(context.params.postId)
+      .collection("comments")
+      .listDocuments()).length;
+    await admin
+      .firestore()
+      .collection("feed")
+      .doc(context.params.postId)
+      .update({ commentCount: count });
+  });
