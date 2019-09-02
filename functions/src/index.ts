@@ -52,6 +52,7 @@ exports.onQuestionEdited = functions.firestore
   .document("/questions/{questionId}")
   .onWrite(async (snap, context) => {
     const count = snap.after.data()!.voters.length;
+
     await admin
       .firestore()
       .collection("questions")
