@@ -79,7 +79,7 @@ exports.compressNewImage = functions.storage.object().onFinalize(data => {
   }
 
   if (data.metadata && data.metadata!.optimized) {
-    console.log("This is not an image.");
+    console.log("This image has been already compressed or optimized");
     return null;
   }
 
