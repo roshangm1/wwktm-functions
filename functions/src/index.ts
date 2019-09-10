@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-const gcs = require("@google-cloud/storage")();
+const gcs = require("@google-cloud/storage");
 const spawn = require("child-process-promise").spawn;
 const mkdirp = require("mkdirp-promise");
 const path = require("path");
@@ -84,7 +84,7 @@ exports.compressNewImage = functions.storage.object().onFinalize(data => {
   }
 
   // Cloud Storage files.
-  const bucket = gcs.bucket(data.bucket);
+  const bucket = gcs.Bucket(data.bucket);
   const file = bucket.file(filePath);
   return mkdirp(tempLocalDir)
     .then(() => file.download({ destination: tempLocalFile }))
